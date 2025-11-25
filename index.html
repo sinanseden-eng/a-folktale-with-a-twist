@@ -57,23 +57,37 @@
             border: 1px solid #d4af37;
             pointer-events: none;
         }
+        /* Hide print button when printing */
+        @media print {
+            .print\:hidden {
+                display: none;
+            }
+            body {
+                background: white;
+            }
+            .max-w-5xl {
+                box-shadow: none;
+                max-width: 100%;
+                width: 100%;
+            }
+        }
     </style>
 </head>
-<body class="min-h-screen p-4 md:p-8 flex items-center justify-center font-body">
+<body class="min-h-screen p-4 md:p-8 flex items-center justify-center font-body text-gray-800">
 
     <!-- Main Container -->
     <div class="max-w-5xl w-full parchment-texture rounded-xl shadow-2xl overflow-hidden relative">
         
         <!-- Header Section -->
         <header class="bg-mystic-purple text-parchment p-8 text-center relative overflow-hidden">
-            <div class="absolute top-0 left-0 w-full h-full opacity-10">
+            <div class="absolute top-0 left-0 w-full h-full opacity-10 pointer-events-none">
                 <i class="fas fa-feather-alt text-9xl absolute -left-10 -top-10 transform rotate-45"></i>
                 <i class="fas fa-book-open text-9xl absolute -right-10 -bottom-10"></i>
             </div>
             
             <div class="relative z-10">
                 <span class="text-royal-gold tracking-[0.3em] text-sm uppercase font-bold mb-2 block">Creative Writing Challenge</span>
-                <h1 class="text-4xl md:text-6xl font-fantasy text-white mb-2 text-shadow-lg">A Folk Tale with a Twist</h1>
+                <h1 class="text-4xl md:text-6xl font-fantasy text-white mb-2" style="text-shadow: 2px 2px 4px rgba(0,0,0,0.5);">A Folk Tale with a Twist</h1>
                 <p class="text-lg md:text-xl font-narrative italic text-royal-gold">"There are two sides to every story..."</p>
             </div>
         </header>
@@ -87,7 +101,7 @@
                 <!-- The Objective -->
                 <section>
                     <div class="flex items-center gap-3 mb-4">
-                        <div class="w-10 h-10 rounded-full bg-mystic-purple text-royal-gold flex items-center justify-center text-xl">
+                        <div class="w-10 h-10 rounded-full bg-mystic-purple text-royal-gold flex items-center justify-center text-xl shrink-0">
                             <i class="fas fa-bullseye"></i>
                         </div>
                         <h2 class="text-2xl font-fantasy text-mystic-purple border-b-2 border-royal-gold pb-1 w-full">The Mission</h2>
@@ -100,7 +114,7 @@
 
                 <!-- Concept Explanation: Misunderstood Characters -->
                 <section class="bg-indigo-50 p-6 rounded-lg border border-indigo-200 shadow-sm relative overflow-hidden">
-                    <div class="absolute top-0 right-0 p-4 opacity-10">
+                    <div class="absolute top-0 right-0 p-4 opacity-10 pointer-events-none">
                         <i class="fas fa-mask text-6xl text-mystic-purple"></i>
                     </div>
                     <h3 class="font-fantasy text-xl text-mystic-purple mb-3 border-b border-indigo-200 pb-2">
@@ -151,8 +165,8 @@
                     </div>
                     <div class="bg-mystic-purple text-parchment p-8 rounded-lg shadow-inner italic font-narrative text-lg relative decorative-border">
                         <i class="fas fa-quote-left absolute top-4 left-4 text-royal-gold opacity-20 text-4xl"></i>
-                        <p class="relative z-10">
-                            "I <span class="text-royal-gold font-bold not-italic border-b border-royal-gold" title="Past Perfect">had learned</span> that the box contained the sun, so I guarded it carefully. One day, while my grandson <span class="text-cyan-300 font-bold not-italic border-b border-cyan-300" title="Past Continuous">was playing</span>, he began crying for the box. I <span class="text-pink-300 font-bold not-italic border-b border-pink-300" title="Past Simple - Negative">didn't know</span> he <span class="text-royal-gold font-bold not-italic border-b border-royal-gold" title="Past Perfect">had turned</span> himself into a bird and <span class="text-cyan-300 font-bold not-italic border-b border-cyan-300" title="Past Continuous">was planning</span> to steal it!"
+                        <p class="relative z-10 pl-6">
+                            "I <span class="text-royal-gold font-bold not-italic border-b border-royal-gold cursor-help" title="Past Perfect">had learned</span> that the box contained the sun, so I guarded it carefully. One day, while my grandson <span class="text-cyan-300 font-bold not-italic border-b border-cyan-300 cursor-help" title="Past Continuous">was playing</span>, he began crying for the box. I <span class="text-pink-300 font-bold not-italic border-b border-pink-300 cursor-help" title="Past Simple - Negative">didn't know</span> he <span class="text-royal-gold font-bold not-italic border-b border-royal-gold cursor-help" title="Past Perfect">had turned</span> himself into a bird and <span class="text-cyan-300 font-bold not-italic border-b border-cyan-300 cursor-help" title="Past Continuous">was planning</span> to steal it!"
                         </p>
                     </div>
                 </section>
@@ -172,44 +186,85 @@
                     </div>
 
                     <!-- Grammar Card 1 -->
-                    <div class="mb-5 group">
+                    <div class="mb-5 group cursor-pointer">
                         <h3 class="text-pink-700 font-bold text-lg mb-1 flex items-center justify-between">
                             Past Simple
                             <i class="fas fa-check text-xs opacity-0 group-hover:opacity-100 transition-opacity"></i>
                         </h3>
                         <p class="text-xs uppercase tracking-wide text-gray-500 mb-2">The Main Events</p>
-                        <div class="bg-pink-50 p-3 rounded border-l-4 border-pink-700 text-sm text-ink">
-                            Use for completed actions that move the story forward.
-                            <br><em class="text-gray-600">"He <strong>stole</strong> the box."</em>
+                        <div class="bg-pink-50 p-3 rounded border-l-4 border-pink-700 text-sm text-ink group-hover:bg-pink-100 transition-colors">
+                            Use for the **main action**. These are the sequential events that drive the plot forward, telling the reader exactly what happened next.
+                            <br><em class="text-gray-600 block mt-1">"He **snatched** the box, **laughed** wickedly, and **ran** into the night."</em>
                         </div>
                     </div>
 
                     <!-- Grammar Card 2 -->
-                    <div class="mb-5 group">
+                    <div class="mb-5 group cursor-pointer">
                         <h3 class="text-cyan-700 font-bold text-lg mb-1 flex items-center justify-between">
                             Past Continuous
                             <i class="fas fa-check text-xs opacity-0 group-hover:opacity-100 transition-opacity"></i>
                         </h3>
-                        <p class="text-xs uppercase tracking-wide text-gray-500 mb-2">The Background / Interruptions</p>
-                        <div class="bg-cyan-50 p-3 rounded border-l-4 border-cyan-700 text-sm text-ink">
-                            Use for actions in progress when something else happened.
-                            <br><em class="text-gray-600">"While I <strong>was guarding</strong> it..."</em>
+                        <p class="text-xs uppercase tracking-wide text-gray-500 mb-2">The Background / Setting the Scene</p>
+                        <div class="bg-cyan-50 p-3 rounded border-l-4 border-cyan-700 text-sm text-ink group-hover:bg-cyan-100 transition-colors">
+                            Use to <strong>set the scene</strong>. It describes the atmosphere (weather, sounds) and what was happening around the characters before the main action interrupted.
+                            <br><em class="text-gray-600 block mt-1">"The wind <strong>was howling</strong> and I <strong>was cooking</strong> stew when..."</em>
                         </div>
                     </div>
 
                     <!-- Grammar Card 3 -->
-                    <div class="group">
+                    <div class="group cursor-pointer">
                         <h3 class="text-amber-600 font-bold text-lg mb-1 flex items-center justify-between">
                             Past Perfect
                             <i class="fas fa-check text-xs opacity-0 group-hover:opacity-100 transition-opacity"></i>
                         </h3>
                         <p class="text-xs uppercase tracking-wide text-gray-500 mb-2">The Backstory</p>
-                        <div class="bg-amber-50 p-3 rounded border-l-4 border-amber-600 text-sm text-ink">
-                            Use for actions that happened <em>before</em> the main story started.
-                            <br><em class="text-gray-600">"I <strong>had warned</strong> him before..."</em>
+                        <div class="bg-amber-50 p-3 rounded border-l-4 border-amber-600 text-sm text-ink group-hover:bg-amber-100 transition-colors">
+                            Use for **flashbacks** and **reasons**. It explains what *had already happened* before the main story began, often revealing a character's motivation.
+                            <br><em class="text-gray-600 block mt-1">"I was angry because he **had promised** never to touch the sacred fire."</em>
                         </div>
                     </div>
 
+                </div>
+
+                <!-- Connectors Box -->
+                <div class="bg-white p-6 rounded-xl shadow-lg border-2 border-royal-gold relative">
+                    <div class="absolute -top-3 left-1/2 transform -translate-x-1/2 bg-royal-gold text-mystic-purple px-4 py-1 rounded-full text-xs font-bold uppercase tracking-wider shadow-sm">
+                        Flow & Clarity
+                    </div>
+                    
+                    <div class="text-center mb-4 mt-2">
+                        <h2 class="text-xl font-fantasy text-mystic-purple">Making Connections</h2>
+                        <p class="text-xs text-gray-500">Guide the reader through your twist</p>
+                    </div>
+
+                    <div class="space-y-4">
+                        <!-- Sequence -->
+                        <div class="flex gap-3 items-start">
+                            <div class="bg-indigo-100 text-indigo-800 p-2 rounded text-xs font-bold w-20 text-center shrink-0 mt-1">TIME</div>
+                            <div class="text-sm text-ink">
+                                <span class="font-bold text-gray-700">Suddenly, Meanwhile, Then, As soon as</span>
+                                <p class="text-xs text-gray-500 mt-1"><em>"<strong>Meanwhile</strong>, the hero was stealing my treasure..."</em></p>
+                            </div>
+                        </div>
+
+                        <!-- Contrast -->
+                        <div class="flex gap-3 items-start">
+                            <div class="bg-pink-100 text-pink-800 p-2 rounded text-xs font-bold w-20 text-center shrink-0 mt-1">CONTRAST</div>
+                            <div class="text-sm text-ink">
+                                <span class="font-bold text-gray-700">However, Although, Despite, But</span>
+                                <p class="text-xs text-gray-500 mt-1"><em>"<strong>Although</strong> I looked scary, I was just lonely."</em></p>
+                            </div>
+                        </div>
+
+                        <!-- Result -->
+                        <div class="flex gap-3 items-start">
+                            <div class="bg-amber-100 text-amber-800 p-2 rounded text-xs font-bold w-20 text-center shrink-0 mt-1">RESULT</div>
+                            <div class="text-sm text-ink">
+                                <span class="font-bold text-gray-700">Therefore, Because, So, As a result</span>
+                                <p class="text-xs text-gray-500 mt-1"><em>"He laughed at me, <strong>so</strong> I cast the spell."</em></p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
                 <!-- Tip Box -->
@@ -233,8 +288,8 @@
     </div>
 
     <!-- Print Control -->
-    <div class="fixed bottom-4 right-4 print:hidden">
-        <button onclick="window.print()" class="bg-royal-gold hover:bg-yellow-600 text-mystic-purple font-bold py-3 px-6 rounded-full shadow-lg transition-all transform hover:scale-105 flex items-center gap-2">
+    <div class="fixed bottom-4 right-4 print:hidden z-50">
+        <button onclick="window.print()" class="bg-royal-gold hover:bg-yellow-600 text-mystic-purple font-bold py-3 px-6 rounded-full shadow-lg transition-all transform hover:scale-105 flex items-center gap-2 border-2 border-mystic-purple">
             <i class="fas fa-print"></i> Print Worksheet
         </button>
     </div>
