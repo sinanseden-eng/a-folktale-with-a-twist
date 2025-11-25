@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A Folk Tale with a Twist</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Lato:ital,wght@0,300;0,400;0,700;1,400&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'mystic-dark': '#1a1025',
+                        'mystic-purple': '#2d1b4e',
+                        'royal-gold': '#d4af37',
+                        'parchment': '#fdfbf7',
+                        'ink': '#2c3e50',
+                        'forest': '#2d4e3e'
+                    },
+                    fontFamily: {
+                        'fantasy': ['Cinzel', 'serif'],
+                        'body': ['Lato', 'sans-serif'],
+                        'narrative': ['Playfair Display', 'serif']
+                    },
+                    boxShadow: {
+                        'glow': '0 0 15px rgba(212, 175, 55, 0.3)',
+                        'paper': '5px 5px 15px rgba(0,0,0,0.2)'
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            background-color: #1a1025;
+            background-image: radial-gradient(circle at 50% 50%, #2d1b4e 0%, #1a1025 100%);
+        }
+        .parchment-texture {
+            background-color: #fdfbf7;
+            background-image: url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23d4af37' fill-opacity='0.05' fill-rule='evenodd'%3E%3Cpath d='M0 38.59l2.83-2.83 1.41 1.41L1.41 40H0v-1.41zM0 1.4l2.83 2.83 1.41-1.41L1.41 0H0v1.41zM38.59 40l-2.83-2.83 1.41-1.41L40 38.59V40h-1.41zM40 1.41l-2.83 2.83-1.41-1.41L38.59 0H40v1.41zM20 18.6l2.83-2.83 1.41 1.41L21.41 20l2.83 2.83-1.41 1.41L20 21.41l-2.83 2.83-1.41-1.41L18.59 20l-2.83-2.83 1.41-1.41L20 18.59z'/%3E%3C/g%3E%3C/svg%3E");
+        }
+        .decorative-border {
+            border: 2px solid #d4af37;
+            position: relative;
+        }
+        .decorative-border::after {
+            content: '';
+            position: absolute;
+            top: 4px;
+            left: 4px;
+            right: 4px;
+            bottom: 4px;
+            border: 1px solid #d4af37;
+            pointer-events: none;
+        }
+    </style>
+</head>
+<body class="min-h-screen p-4 md:p-8 flex items-center justify-center font-body">
+
+    <!-- Main Container -->
+    <div class="max-w-5xl w-full parchment-texture rounded-xl shadow-2xl overflow-hidden relative">
+        
+        <!-- Header Section -->
+        <header class="bg-mystic-purple text-parchment p-8 text-center relative overflow-hidden">
+            <div class="absolute top-0 left-0 w-full h-full opacity-10">
+                <i class="fas fa-feather-alt text-9xl absolute -left-10 -top-10 transform rotate-45"></i>
+                <i class="fas fa-book-open text-9xl absolute -right-10 -bottom-10"></i>
+            </div>
+            
+            <div class="relative z-10">
+                <span class="text-royal-gold tracking-[0.3em] text-sm uppercase font-bold mb-2 block">Creative Writing Challenge</span>
+                <h1 class="text-4xl md:text-6xl font-fantasy text-white mb-2 text-shadow-lg">A Folk Tale with a Twist</h1>
+                <p class="text-lg md:text-xl font-narrative italic text-royal-gold">"There are two sides to every story..."</p>
+            </div>
+        </header>
+
+        <!-- Content Grid -->
+        <div class="p-6 md:p-10 grid grid-cols-1 lg:grid-cols-12 gap-8">
+            
+            <!-- Left Column: The Concept & Instructions (7 cols) -->
+            <div class="lg:col-span-7 space-y-8">
+                
+                <!-- The Objective -->
+                <section>
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="w-10 h-10 rounded-full bg-mystic-purple text-royal-gold flex items-center justify-center text-xl">
+                            <i class="fas fa-bullseye"></i>
+                        </div>
+                        <h2 class="text-2xl font-fantasy text-mystic-purple border-b-2 border-royal-gold pb-1 w-full">The Mission</h2>
+                    </div>
+                    <p class="text-ink text-lg leading-relaxed">
+                        History is written by the victors, but today, you will write for the forgotten. 
+                        Choose a famous folk tale (like <em>The Raven</em>, <em>Cinderella</em>, or <em>Red Riding Hood</em>) and retell it from the perspective of the <strong>Villain</strong> or a <strong>Minor Character</strong>.
+                    </p>
+                </section>
+
+                <!-- Concept Explanation: Misunderstood Characters -->
+                <section class="bg-indigo-50 p-6 rounded-lg border border-indigo-200 shadow-sm relative overflow-hidden">
+                    <div class="absolute top-0 right-0 p-4 opacity-10">
+                        <i class="fas fa-mask text-6xl text-mystic-purple"></i>
+                    </div>
+                    <h3 class="font-fantasy text-xl text-mystic-purple mb-3 border-b border-indigo-200 pb-2">
+                        <i class="fas fa-question-circle mr-2"></i>What is "Misunderstood"?
+                    </h3>
+                    <p class="text-ink text-sm mb-4">
+                        A misunderstood character isn't necessarily "good," but they have <strong>reasons</strong> for their actions that the hero ignores.
+                    </p>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div class="bg-white p-3 rounded border-l-2 border-royal-gold shadow-sm">
+                            <h4 class="font-bold text-mystic-purple text-sm">Medusa (Greek Myth)</h4>
+                            <p class="text-xs text-gray-600 mt-1">Monster? Or a victim cursed by jealous gods, forced to live in isolation?</p>
+                        </div>
+                        <div class="bg-white p-3 rounded border-l-2 border-royal-gold shadow-sm">
+                            <h4 class="font-bold text-mystic-purple text-sm">Captain Hook (Peter Pan)</h4>
+                            <p class="text-xs text-gray-600 mt-1">Villain? Or an old pirate tormented by a flying boy who cut off his hand?</p>
+                        </div>
+                        <div class="bg-white p-3 rounded border-l-2 border-royal-gold shadow-sm md:col-span-2">
+                            <h4 class="font-bold text-mystic-purple text-sm">The Wicked Witch (Oz)</h4>
+                            <p class="text-xs text-gray-600 mt-1">Evil tyrant? Or a grieving sister trying to protect her family's heirloom (the shoes)?</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Step by Step -->
+                <section class="bg-white p-6 rounded-lg shadow-md border-l-4 border-mystic-purple">
+                    <h3 class="font-bold text-xl text-mystic-purple mb-4">Your Writing Steps:</h3>
+                    <ul class="space-y-4">
+                        <li class="flex items-start gap-3">
+                            <span class="bg-gray-200 text-mystic-purple font-bold w-6 h-6 rounded flex items-center justify-center flex-shrink-0 mt-1">1</span>
+                            <span class="text-ink"><strong>Select a Character:</strong> Pick someone misunderstood. (e.g., The Chief who lost the sun, the Wolf who just wanted lunch).</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <span class="bg-gray-200 text-mystic-purple font-bold w-6 h-6 rounded flex items-center justify-center flex-shrink-0 mt-1">2</span>
+                            <span class="text-ink"><strong>Plan the Timeline:</strong> What happened before the main event? What was happening when the "hero" arrived?</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <span class="bg-gray-200 text-mystic-purple font-bold w-6 h-6 rounded flex items-center justify-center flex-shrink-0 mt-1">3</span>
+                            <span class="text-ink"><strong>Draft the Narrative:</strong> Write 150-200 words using the <strong>Grammar Toolkit</strong> below.</span>
+                        </li>
+                    </ul>
+                </section>
+
+                <!-- The Example -->
+                <section class="relative mt-8">
+                    <div class="absolute -top-4 -left-2 bg-royal-gold text-mystic-purple px-4 py-1 font-bold transform -rotate-2 shadow-md rounded-sm z-10">
+                        Example: The Chief from "The Raven"
+                    </div>
+                    <div class="bg-mystic-purple text-parchment p-8 rounded-lg shadow-inner italic font-narrative text-lg relative decorative-border">
+                        <i class="fas fa-quote-left absolute top-4 left-4 text-royal-gold opacity-20 text-4xl"></i>
+                        <p class="relative z-10">
+                            "I <span class="text-royal-gold font-bold not-italic border-b border-royal-gold" title="Past Perfect">had learned</span> that the box contained the sun, so I guarded it carefully. One day, while my grandson <span class="text-cyan-300 font-bold not-italic border-b border-cyan-300" title="Past Continuous">was playing</span>, he began crying for the box. I <span class="text-pink-300 font-bold not-italic border-b border-pink-300" title="Past Simple - Negative">didn't know</span> he <span class="text-royal-gold font-bold not-italic border-b border-royal-gold" title="Past Perfect">had turned</span> himself into a bird and <span class="text-cyan-300 font-bold not-italic border-b border-cyan-300" title="Past Continuous">was planning</span> to steal it!"
+                        </p>
+                    </div>
+                </section>
+
+            </div>
+
+            <!-- Right Column: Grammar Toolkit (5 cols) -->
+            <div class="lg:col-span-5 flex flex-col gap-6">
+                
+                <div class="bg-white p-6 rounded-xl shadow-lg border-2 border-royal-gold h-full">
+                    <div class="text-center mb-6">
+                        <div class="inline-block p-3 rounded-full bg-parchment border border-royal-gold mb-2">
+                            <i class="fas fa-tools text-2xl text-mystic-purple"></i>
+                        </div>
+                        <h2 class="text-2xl font-fantasy text-mystic-purple">Grammar in Action</h2>
+                        <p class="text-sm text-gray-500">Narrative Tenses</p>
+                    </div>
+
+                    <!-- Grammar Card 1 -->
+                    <div class="mb-5 group">
+                        <h3 class="text-pink-700 font-bold text-lg mb-1 flex items-center justify-between">
+                            Past Simple
+                            <i class="fas fa-check text-xs opacity-0 group-hover:opacity-100 transition-opacity"></i>
+                        </h3>
+                        <p class="text-xs uppercase tracking-wide text-gray-500 mb-2">The Main Events</p>
+                        <div class="bg-pink-50 p-3 rounded border-l-4 border-pink-700 text-sm text-ink">
+                            Use for completed actions that move the story forward.
+                            <br><em class="text-gray-600">"He <strong>stole</strong> the box."</em>
+                        </div>
+                    </div>
+
+                    <!-- Grammar Card 2 -->
+                    <div class="mb-5 group">
+                        <h3 class="text-cyan-700 font-bold text-lg mb-1 flex items-center justify-between">
+                            Past Continuous
+                            <i class="fas fa-check text-xs opacity-0 group-hover:opacity-100 transition-opacity"></i>
+                        </h3>
+                        <p class="text-xs uppercase tracking-wide text-gray-500 mb-2">The Background / Interruptions</p>
+                        <div class="bg-cyan-50 p-3 rounded border-l-4 border-cyan-700 text-sm text-ink">
+                            Use for actions in progress when something else happened.
+                            <br><em class="text-gray-600">"While I <strong>was guarding</strong> it..."</em>
+                        </div>
+                    </div>
+
+                    <!-- Grammar Card 3 -->
+                    <div class="group">
+                        <h3 class="text-amber-600 font-bold text-lg mb-1 flex items-center justify-between">
+                            Past Perfect
+                            <i class="fas fa-check text-xs opacity-0 group-hover:opacity-100 transition-opacity"></i>
+                        </h3>
+                        <p class="text-xs uppercase tracking-wide text-gray-500 mb-2">The Backstory</p>
+                        <div class="bg-amber-50 p-3 rounded border-l-4 border-amber-600 text-sm text-ink">
+                            Use for actions that happened <em>before</em> the main story started.
+                            <br><em class="text-gray-600">"I <strong>had warned</strong> him before..."</em>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- Tip Box -->
+                <div class="bg-mystic-dark text-parchment p-5 rounded-lg shadow-lg relative overflow-hidden">
+                    <div class="relative z-10">
+                        <h4 class="font-fantasy text-royal-gold text-lg mb-2"><i class="fas fa-lightbulb mr-2"></i>Storyteller's Tip</h4>
+                        <p class="text-sm opacity-90">
+                            To make the twist effective, justify the "villain's" actions. Maybe they were just trying to protect something (like the Chief) or they were simply hungry!
+                        </p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <footer class="bg-gray-100 p-4 text-center border-t border-gray-300">
+            <p class="text-gray-500 text-sm font-body">Reference: Student Book p. 31 • Narrative Tenses Writing Task</p>
+        </footer>
+
+    </div>
+
+    <!-- Print Control -->
+    <div class="fixed bottom-4 right-4 print:hidden">
+        <button onclick="window.print()" class="bg-royal-gold hover:bg-yellow-600 text-mystic-purple font-bold py-3 px-6 rounded-full shadow-lg transition-all transform hover:scale-105 flex items-center gap-2">
+            <i class="fas fa-print"></i> Print Worksheet
+        </button>
+    </div>
+
+</body>
+</html>
