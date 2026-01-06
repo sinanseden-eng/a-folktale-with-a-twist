@@ -71,6 +71,8 @@
             .print\:hidden { display: none; }
             body { background: white; }
             .max-w-5xl { box-shadow: none; max-width: 100%; width: 100%; }
+            /* Ensure modal is hidden on print */
+            #quiz-modal { display: none !important; }
         }
     </style>
 </head>
@@ -148,7 +150,7 @@
                         </div>
                     </div>
 
-                    <!-- QUIZ TRIGGER BUTTON (New) -->
+                    <!-- QUIZ TRIGGER BUTTON -->
                     <div class="mt-6 bg-gradient-to-r from-mystic-purple to-indigo-900 rounded-lg shadow-lg p-1 overflow-hidden">
                         <div class="bg-mystic-purple/50 backdrop-blur-sm p-4 flex flex-col sm:flex-row items-center justify-between gap-4 text-white">
                             <div class="flex items-center gap-3">
@@ -160,7 +162,7 @@
                                     <p class="text-xs text-gray-200">Test your skills: Can you spot the deception?</p>
                                 </div>
                             </div>
-                            <button onclick="openQuiz()" class="bg-royal-gold hover:bg-yellow-400 text-mystic-purple font-bold py-2 px-6 rounded-full shadow-lg transform transition hover:scale-105 uppercase text-sm tracking-wider">
+                            <button type="button" onclick="openQuiz()" class="bg-royal-gold hover:bg-yellow-400 text-mystic-purple font-bold py-2 px-6 rounded-full shadow-lg transform transition hover:scale-105 uppercase text-sm tracking-wider cursor-pointer">
                                 Enter Courtroom
                             </button>
                         </div>
