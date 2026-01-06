@@ -434,24 +434,12 @@
     </div>
 
     <script>
-        // Modal Logic
-        const quizModal = document.getElementById('quiz-modal');
-        function openQuiz() {
-            quizModal.classList.remove('hidden');
-            if(score === 0 && currentRoundIndex === 0) loadRound(0); // Only load if not started or reset
-        }
-        function closeQuiz() {
-            quizModal.classList.add('hidden');
-        }
-        function resetQuiz() {
-            currentRoundIndex = 0;
-            score = 0;
-            scoreEl.textContent = 0;
-            document.getElementById('result-screen').classList.add('hidden');
-            loadRound(0);
-        }
+        // --- 1. DEFINE VARIABLES FIRST ---
+        let currentRoundIndex = 0;
+        let score = 0;
+        let canClick = true;
 
-        // Quiz Data (Expanded)
+        // Quiz Data
         const quizData = [
             {
                 round: 1,
@@ -527,11 +515,8 @@
             }
         ];
 
-        let currentRoundIndex = 0;
-        let score = 0;
-        let canClick = true;
-
-        // DOM Elements
+        // --- 2. DEFINE ELEMENTS ---
+        const quizModal = document.getElementById('quiz-modal');
         const mechanismTitle = document.getElementById('mechanism-title');
         const mechanismDef = document.getElementById('mechanism-def');
         const currentRoundEl = document.getElementById('current-round');
@@ -546,22 +531,44 @@
         const feedbackText = document.getElementById('feedback-text');
         const nextBtn = document.getElementById('next-btn');
 
-        // Init
-        totalRoundsEl.textContent = quizData.length;
-        
+        // --- 3. DEFINE FUNCTIONS ---
+        function openQuiz() {
+            quizModal.classList.remove('hidden');
+            // Ensure first round is loaded if fresh start
+            if (score === 0 && currentRoundIndex === 0) {
+                loadRound(0);
+            }
+        }
+
+        function closeQuiz() {
+            quizModal.classList.add('hidden');
+        }
+
+        function resetQuiz() {
+            currentRoundIndex = 0;
+            score = 0;
+            scoreEl.textContent = 0;
+            document.getElementById('result-screen').classList.add('hidden');
+            loadRound(0);
+        }
+
         function loadRound(index) {
             const data = quizData[index];
             
+            // Update Text
             mechanismTitle.textContent = data.mechanism;
             mechanismDef.textContent = data.definition;
             currentRoundEl.textContent = index + 1;
+            totalRoundsEl.textContent = quizData.length;
             scenarioLocation.textContent = data.location;
             scenarioQuestion.textContent = data.question;
 
+            // Reset UI
             feedbackArea.classList.add('hidden');
             cardsContainer.innerHTML = '';
             canClick = true;
 
+            // Generate Cards
             data.characters.forEach(char => {
                 const card = document.createElement('div');
                 card.className = `bg-white border-2 border-gray-100 rounded-xl p-4 cursor-pointer hover:border-royal-gold flex flex-col transition-all`;
@@ -613,6 +620,7 @@
             }
         }
 
+        // --- 4. EVENTS ---
         nextBtn.onclick = () => {
             currentRoundIndex++;
             if (currentRoundIndex < quizData.length) {
@@ -628,6 +636,9 @@
             document.getElementById('result-screen').classList.remove('hidden');
             document.getElementById('result-screen').classList.add('flex');
         }
+
+        // Initialize just in case
+        totalRoundsEl.textContent = quizData.length;
     </script>
 </body>
 </html>
