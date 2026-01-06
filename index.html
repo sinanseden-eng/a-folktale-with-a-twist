@@ -57,19 +57,20 @@
             border: 1px solid #d4af37;
             pointer-events: none;
         }
+        /* Quiz Modal Styles */
+        .modal-enter { opacity: 0; transform: scale(0.9); }
+        .modal-enter-active { opacity: 1; transform: scale(1); transition: opacity 300ms, transform 300ms; }
+        .modal-exit { opacity: 1; transform: scale(1); }
+        .modal-exit-active { opacity: 0; transform: scale(0.9); transition: opacity 300ms, transform 300ms; }
+        
+        .selected-correct { border-color: #10b981 !important; background-color: #ecfdf5 !important; }
+        .selected-wrong { border-color: #ef4444 !important; background-color: #fef2f2 !important; }
+
         /* Hide print button when printing */
         @media print {
-            .print\:hidden {
-                display: none;
-            }
-            body {
-                background: white;
-            }
-            .max-w-5xl {
-                box-shadow: none;
-                max-width: 100%;
-                width: 100%;
-            }
+            .print\:hidden { display: none; }
+            body { background: white; }
+            .max-w-5xl { box-shadow: none; max-width: 100%; width: 100%; }
         }
     </style>
 </head>
@@ -144,6 +145,24 @@
                             <h4 class="font-bold text-mystic-purple text-sm">3. Displacement of Responsibility ("No Choice")</h4>
                             <p class="text-xs text-gray-600 mt-1">Denying personal agency by blaming authority or social pressure.</p>
                             <p class="text-xs text-indigo-800 mt-1 font-bold"><em>"The Magic Mirror told me she was a threat to the kingdom. I had to act!"</em></p>
+                        </div>
+                    </div>
+
+                    <!-- QUIZ TRIGGER BUTTON (New) -->
+                    <div class="mt-6 bg-gradient-to-r from-mystic-purple to-indigo-900 rounded-lg shadow-lg p-1 overflow-hidden">
+                        <div class="bg-mystic-purple/50 backdrop-blur-sm p-4 flex flex-col sm:flex-row items-center justify-between gap-4 text-white">
+                            <div class="flex items-center gap-3">
+                                <div class="w-12 h-12 bg-royal-gold rounded-full flex items-center justify-center text-mystic-purple text-2xl animate-pulse">
+                                    <i class="fas fa-gavel"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-royal-gold font-fantasy">Interactive Challenge</h4>
+                                    <p class="text-xs text-gray-200">Test your skills: Can you spot the deception?</p>
+                                </div>
+                            </div>
+                            <button onclick="openQuiz()" class="bg-royal-gold hover:bg-yellow-400 text-mystic-purple font-bold py-2 px-6 rounded-full shadow-lg transform transition hover:scale-105 uppercase text-sm tracking-wider">
+                                Enter Courtroom
+                            </button>
                         </div>
                     </div>
 
@@ -322,11 +341,291 @@
     </div>
 
     <!-- Print Control -->
-    <div class="fixed bottom-4 right-4 print:hidden z-50">
+    <div class="fixed bottom-4 right-4 print:hidden z-40">
         <button onclick="window.print()" class="bg-royal-gold hover:bg-yellow-600 text-mystic-purple font-bold py-3 px-6 rounded-full shadow-lg transition-all transform hover:scale-105 flex items-center gap-2 border-2 border-mystic-purple">
             <i class="fas fa-print"></i> Print Worksheet
         </button>
     </div>
 
+    <!-- QUIZ MODAL (Hidden by default) -->
+    <div id="quiz-modal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4">
+        <!-- Backdrop -->
+        <div class="absolute inset-0 bg-black/80 backdrop-blur-sm" onclick="closeQuiz()"></div>
+        
+        <!-- Modal Content -->
+        <div class="relative bg-gradient-to-br from-gray-900 to-indigo-900 w-full max-w-4xl max-h-[90vh] overflow-y-auto rounded-2xl shadow-2xl border border-white/10 flex flex-col text-white">
+            
+            <!-- Close Button -->
+            <button onclick="closeQuiz()" class="absolute top-4 right-4 text-white/50 hover:text-white z-10">
+                <i class="fas fa-times text-2xl"></i>
+            </button>
+
+            <!-- Quiz Layout -->
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-0 min-h-[600px]">
+                
+                <!-- Left Panel (4 cols) -->
+                <div class="lg:col-span-4 bg-black/20 p-6 lg:p-8 flex flex-col justify-center border-b lg:border-b-0 lg:border-r border-white/10">
+                    <div class="mb-6">
+                        <span class="text-royal-gold tracking-widest text-xs font-bold uppercase mb-2 block">TOK Psychology</span>
+                        <h2 class="text-3xl font-fantasy text-white mb-2 leading-tight">Detect the <br><span class="text-royal-gold">Deception</span></h2>
+                        <p class="text-gray-400 text-sm">Villains sleep well at night. Do you know why?</p>
+                    </div>
+                    
+                    <div id="definition-box" class="bg-white/5 p-4 rounded-lg border-l-4 border-royal-gold mt-4">
+                        <h3 class="text-royal-gold font-bold uppercase text-xs mb-1">Target Mechanism:</h3>
+                        <h2 id="mechanism-title" class="text-xl font-fantasy text-white mb-2">Loading...</h2>
+                        <p id="mechanism-def" class="text-gray-300 italic text-sm">Loading...</p>
+                    </div>
+
+                    <div class="mt-auto pt-6 flex items-center justify-between border-t border-white/10">
+                        <div class="text-xs text-gray-500">Round <span id="current-round">1</span> / <span id="total-rounds">6</span></div>
+                        <div class="text-lg font-bold text-royal-gold">Score: <span id="score">0</span></div>
+                    </div>
+                </div>
+
+                <!-- Right Panel (8 cols) -->
+                <div class="lg:col-span-8 p-6 lg:p-8 bg-white text-gray-800 relative flex flex-col">
+                    
+                    <!-- Result Screen (Hidden) -->
+                    <div id="result-screen" class="hidden absolute inset-0 bg-mystic-dark z-20 flex flex-col items-center justify-center text-center p-8 text-white rounded-r-2xl">
+                        <i class="fas fa-crown text-6xl text-royal-gold mb-6 animate-bounce"></i>
+                        <h2 class="text-3xl font-fantasy mb-4">Judgment Delivered!</h2>
+                        <p class="text-xl text-gray-300 mb-8">You scored <span id="final-score" class="text-royal-gold font-bold"></span> out of <span id="final-total"></span></p>
+                        <div class="flex gap-4">
+                            <button onclick="resetQuiz()" class="px-6 py-2 bg-royal-gold text-mystic-dark font-bold rounded-full hover:bg-yellow-500 transition-colors">Play Again</button>
+                            <button onclick="closeQuiz()" class="px-6 py-2 border border-white/30 hover:bg-white/10 text-white font-bold rounded-full transition-colors">Close</button>
+                        </div>
+                    </div>
+
+                    <!-- Scenario Header -->
+                    <div class="mb-6 text-center">
+                        <div class="inline-block bg-mystic-purple text-white px-3 py-1 rounded-full text-xs uppercase tracking-wider mb-2">
+                            <i class="fas fa-map-marker-alt mr-2 text-royal-gold"></i> <span id="scenario-location">Location</span>
+                        </div>
+                        <h3 id="scenario-question" class="text-xl font-narrative italic text-mystic-dark">"Question..."</h3>
+                    </div>
+
+                    <!-- Character Cards -->
+                    <div id="cards-container" class="grid grid-cols-1 gap-3 mb-6 flex-grow overflow-y-auto max-h-[400px]">
+                        <!-- JS Injected -->
+                    </div>
+
+                    <!-- Feedback -->
+                    <div id="feedback-area" class="hidden bg-gray-100 p-4 rounded-xl border border-gray-200 mt-auto">
+                        <div class="flex items-start gap-3">
+                            <div id="feedback-icon" class="w-8 h-8 rounded-full flex items-center justify-center text-white text-sm flex-shrink-0"></div>
+                            <div>
+                                <h4 id="feedback-title" class="font-bold text-sm mb-1">Title</h4>
+                                <p id="feedback-text" class="text-xs text-gray-700">Explanation text.</p>
+                            </div>
+                        </div>
+                        <div class="text-right mt-2">
+                            <button id="next-btn" class="bg-mystic-purple text-white px-4 py-1 rounded hover:bg-mystic-dark transition-colors text-sm font-bold shadow-md">
+                                Next Round <i class="fas fa-arrow-right ml-2"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Modal Logic
+        const quizModal = document.getElementById('quiz-modal');
+        function openQuiz() {
+            quizModal.classList.remove('hidden');
+            if(score === 0 && currentRoundIndex === 0) loadRound(0); // Only load if not started or reset
+        }
+        function closeQuiz() {
+            quizModal.classList.add('hidden');
+        }
+        function resetQuiz() {
+            currentRoundIndex = 0;
+            score = 0;
+            scoreEl.textContent = 0;
+            document.getElementById('result-screen').classList.add('hidden');
+            loadRound(0);
+        }
+
+        // Quiz Data (Expanded)
+        const quizData = [
+            {
+                round: 1,
+                mechanism: "Moral Justification",
+                definition: "Reframing a bad action as serving a 'noble cause,' 'higher purpose,' or 'teaching a lesson.'",
+                location: "The Interrogation Room",
+                question: "Police Officer: \"Why did you steal the family's winter firewood?\"",
+                characters: [
+                    { id: 'A', name: "The Fox", role: "Character A", quote: "I didn't steal it! The farmer left the gate open. It's really his fault.", isCorrect: false, explanation: "Incorrect. Blaming the victim is <strong>Attribution of Blame</strong>." },
+                    { id: 'B', name: "The Robin Hood", role: "Character B", quote: "I took the wood to keep the orphanage warm. Stealing is a small price to pay to save innocent lives.", isCorrect: true, explanation: "Correct! Claiming a 'greater good' to justify a bad act is <strong>Moral Justification</strong>." },
+                    { id: 'C', name: "The Soldier", role: "Character C", quote: "My Captain ordered me to confiscate all wood. I have to follow orders.", isCorrect: false, explanation: "Incorrect. Following orders is <strong>Displacement of Responsibility</strong>." }
+                ]
+            },
+            {
+                round: 2,
+                mechanism: "Attribution of Blame",
+                definition: "Claiming the victim 'started it,' 'deserved it,' or 'provoked' the action.",
+                location: "The Principal's Office",
+                question: "Principal: \"Why did you push him into the mud?\"",
+                characters: [
+                    { id: 'A', name: "The Bully", role: "Character A", quote: "He was walking on MY side of the path. He knows the rules. He was asking for it.", isCorrect: true, explanation: "Correct! Saying the victim 'asked for it' is <strong>Attribution of Blame</strong>." },
+                    { id: 'B', name: "The 'Hero'", role: "Character B", quote: "I pushed him to toughen him up. The world is a dirty place, he needs to learn resilience.", isCorrect: false, explanation: "Incorrect. Framing bullying as a lesson is <strong>Moral Justification</strong>." },
+                    { id: 'C', name: "The Follower", role: "Character C", quote: "The other kids were chanting 'Push him!' The peer pressure was too strong.", isCorrect: false, explanation: "Incorrect. Blaming the group is <strong>Displacement of Responsibility</strong>." }
+                ]
+            },
+            {
+                round: 3,
+                mechanism: "Displacement of Responsibility",
+                definition: "Denying personal choice by blaming authority, social pressure, or 'having no choice.'",
+                location: "The Magical Court",
+                question: "Judge: \"Why did you cast the sleeping curse on the kingdom?\"",
+                characters: [
+                    { id: 'A', name: "The Sorcerer", role: "Character A", quote: "The King insulted my dignity! A royal insult demands a royal punishment.", isCorrect: false, explanation: "Incorrect. Framing revenge as honor is <strong>Moral Justification</strong>." },
+                    { id: 'B', name: "The Minion", role: "Character B", quote: "The Dark Lord holds my soul in a jar. If I don't cast spells, he'll crush it. I'm just a tool.", isCorrect: true, explanation: "Correct! Claiming to be a tool with no free will is <strong>Displacement of Responsibility</strong>." },
+                    { id: 'C', name: "The Trickster", role: "Character C", quote: "I didn't cast a 'curse,' I gave them a 'mandatory vacation.' They should thank me!", isCorrect: false, explanation: "Incorrect. Soft language is <strong>Euphemistic Labeling</strong>." }
+                ]
+            },
+            {
+                round: 4,
+                mechanism: "Moral Justification",
+                definition: "Reframing a bad action as serving a 'noble cause,' 'higher purpose,' or 'teaching a lesson.'",
+                location: "The Rebel Base",
+                question: "General: \"Why did you destroy the bridge, starving the village?\"",
+                characters: [
+                    { id: 'A', name: "The Strategist", role: "Character A", quote: "We sacrificed the bridge to save the entire country from tyranny. It was necessary for freedom.", isCorrect: true, explanation: "Correct! Destruction for 'freedom' is <strong>Moral Justification</strong>." },
+                    { id: 'B', name: "The Soldier", role: "Character B", quote: "The Commander gave the signal. I just pushed the button.", isCorrect: false, explanation: "Incorrect. Blaming the commander is <strong>Displacement of Responsibility</strong>." },
+                    { id: 'C', name: "The Engineer", role: "Character C", quote: "The villagers built it too weak. It's their fault it collapsed so easily.", isCorrect: false, explanation: "Incorrect. Blaming the builders is <strong>Attribution of Blame</strong>." }
+                ]
+            },
+            {
+                round: 5,
+                mechanism: "Attribution of Blame",
+                definition: "Claiming the victim 'started it,' 'deserved it,' or 'provoked' the action.",
+                location: "The Dragon's Lair",
+                question: "Knight: \"Why did you burn down the farm?\"",
+                characters: [
+                    { id: 'A', name: "The Minion", role: "Character A", quote: "The Dark Wizard controls my mind. I physically cannot disobey.", isCorrect: false, explanation: "Incorrect. Lack of control is <strong>Displacement of Responsibility</strong>." },
+                    { id: 'B', name: "The Cultist", role: "Character B", quote: "Fire is a purifying force. We are cleansing the land for a new world.", isCorrect: false, explanation: "Incorrect. 'Cleansing' is <strong>Moral Justification</strong>." },
+                    { id: 'C', name: "The Dragon", role: "Character C", quote: "They poked the sleeping dragon! If they hadn't been so greedy, I would have stayed asleep.", isCorrect: true, explanation: "Correct! 'They poked me' is <strong>Attribution of Blame</strong>." }
+                ]
+            },
+            {
+                round: 6,
+                mechanism: "Displacement of Responsibility",
+                definition: "Denying personal choice by blaming authority, social pressure, or 'having no choice.'",
+                location: "The Corporate Boardroom",
+                question: "Reporter: \"Why did you dump the toxic waste in the river?\"",
+                characters: [
+                    { id: 'A', name: "The CEO", role: "Character A", quote: "It's not 'toxic waste,' it's 'industrial byproduct' that helps algae grow.", isCorrect: false, explanation: "Incorrect. This is <strong>Euphemistic Labeling</strong>." },
+                    { id: 'B', name: "The Manager", role: "Character B", quote: "The fish were swimming too close to the pipes. They shouldn't be near our property.", isCorrect: false, explanation: "Incorrect. Blaming the fish is <strong>Attribution of Blame</strong>." },
+                    { id: 'C', name: "The Employee", role: "Character C", quote: "I was just following company policy. I'm just a cog in the machine.", isCorrect: true, explanation: "Correct! 'Cog in the machine' is <strong>Displacement of Responsibility</strong>." }
+                ]
+            }
+        ];
+
+        let currentRoundIndex = 0;
+        let score = 0;
+        let canClick = true;
+
+        // DOM Elements
+        const mechanismTitle = document.getElementById('mechanism-title');
+        const mechanismDef = document.getElementById('mechanism-def');
+        const currentRoundEl = document.getElementById('current-round');
+        const totalRoundsEl = document.getElementById('total-rounds');
+        const scoreEl = document.getElementById('score');
+        const scenarioLocation = document.getElementById('scenario-location');
+        const scenarioQuestion = document.getElementById('scenario-question');
+        const cardsContainer = document.getElementById('cards-container');
+        const feedbackArea = document.getElementById('feedback-area');
+        const feedbackIcon = document.getElementById('feedback-icon');
+        const feedbackTitle = document.getElementById('feedback-title');
+        const feedbackText = document.getElementById('feedback-text');
+        const nextBtn = document.getElementById('next-btn');
+
+        // Init
+        totalRoundsEl.textContent = quizData.length;
+        
+        function loadRound(index) {
+            const data = quizData[index];
+            
+            mechanismTitle.textContent = data.mechanism;
+            mechanismDef.textContent = data.definition;
+            currentRoundEl.textContent = index + 1;
+            scenarioLocation.textContent = data.location;
+            scenarioQuestion.textContent = data.question;
+
+            feedbackArea.classList.add('hidden');
+            cardsContainer.innerHTML = '';
+            canClick = true;
+
+            data.characters.forEach(char => {
+                const card = document.createElement('div');
+                card.className = `bg-white border-2 border-gray-100 rounded-xl p-4 cursor-pointer hover:border-royal-gold flex flex-col transition-all`;
+                card.onclick = () => handleAnswer(char, card);
+
+                card.innerHTML = `
+                    <div class="flex items-center gap-3 mb-2 border-b border-gray-100 pb-2">
+                        <div class="w-6 h-6 rounded-full bg-mystic-purple text-white flex items-center justify-center font-bold text-xs">${char.id}</div>
+                        <div>
+                            <h4 class="font-bold text-mystic-dark text-sm leading-none">${char.role}</h4>
+                            <span class="text-xs text-gray-500 uppercase tracking-wider">${char.name}</span>
+                        </div>
+                    </div>
+                    <p class="text-sm text-gray-600 font-narrative italic">"${char.quote}"</p>
+                `;
+                cardsContainer.appendChild(card);
+            });
+        }
+
+        function handleAnswer(character, cardElement) {
+            if (!canClick) return;
+            canClick = false;
+
+            if (character.isCorrect) {
+                cardElement.classList.add('selected-correct');
+                score++;
+                scoreEl.textContent = score;
+                showFeedback(true, character.explanation);
+            } else {
+                cardElement.classList.add('selected-wrong');
+                showFeedback(false, character.explanation);
+            }
+        }
+
+        function showFeedback(isCorrect, text) {
+            feedbackArea.classList.remove('hidden');
+            feedbackText.innerHTML = text;
+
+            if (isCorrect) {
+                feedbackIcon.className = "w-8 h-8 rounded-full flex items-center justify-center text-white text-sm flex-shrink-0 bg-green-500";
+                feedbackIcon.innerHTML = '<i class="fas fa-check"></i>';
+                feedbackTitle.textContent = "Correct!";
+                feedbackTitle.className = "font-bold text-sm mb-1 text-green-700";
+            } else {
+                feedbackIcon.className = "w-8 h-8 rounded-full flex items-center justify-center text-white text-sm flex-shrink-0 bg-red-500";
+                feedbackIcon.innerHTML = '<i class="fas fa-times"></i>';
+                feedbackTitle.textContent = "Not quite...";
+                feedbackTitle.className = "font-bold text-sm mb-1 text-red-700";
+            }
+        }
+
+        nextBtn.onclick = () => {
+            currentRoundIndex++;
+            if (currentRoundIndex < quizData.length) {
+                loadRound(currentRoundIndex);
+            } else {
+                showResults();
+            }
+        };
+
+        function showResults() {
+            document.getElementById('final-score').textContent = score;
+            document.getElementById('final-total').textContent = quizData.length;
+            document.getElementById('result-screen').classList.remove('hidden');
+            document.getElementById('result-screen').classList.add('flex');
+        }
+    </script>
 </body>
 </html>
